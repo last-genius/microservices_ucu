@@ -1,0 +1,10 @@
+GET http://localhost:9000/
+Accept: text/html
+###
+
+POST http://localhost:9000/
+Content-type: application/json
+
+msg1
+
+###
