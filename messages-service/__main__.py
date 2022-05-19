@@ -1,22 +1,15 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import os
+from flask import Flask, request
+
+app = Flask(__name__)
+host_name = "localhost"
+host_port = 9002
 
 
-class MessageHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write("not implemented yet".encode())
-
-
-def run():
-    host_name = "localhost"
-    host_port = 9002
-    httpd = HTTPServer((host_name, host_port), MessageHandler)
-    print('message server is running...')
-    httpd.serve_forever()
+@app.get("/")
+def do_GET():
+    return "not implemented yet"
 
 
 if __name__ == '__main__':
-    run()
+    print('message server is running...')
+    app.run(host_name, host_port)
