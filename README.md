@@ -1,20 +1,18 @@
-## Task 3
+## Task 4
 
-After launching one facade service, one messaging service and three logging services (connected to three Hazelcast nodes),
-we can send messages through the facade service.
+After launching a facade service, two instances of the message service and three logging services, we can send 10 POST requests:
 
 ![](./img/1.png)
 
-A GET request after all POST requests:
+These are the logs of the message services:
 ![](./img/2.png)
-
-Since logging services are chosen randomly from a list by the facade service, each one
-of them receives only several messages:
-
 ![](./img/3.png)
+
+And the logs of the logging services:
 ![](./img/4.png)
 ![](./img/5.png)
+![](./img/6.png)
 
-Since we are chosing logging services from a pre-defined list, we encounter errors
-after suspending some of them, but we are still able to read messages from the remaining
-Hazelcast nodes
+And the GET request to the facade service, showing the results from the logging service and the message service:
+![](./img/7.png)
+

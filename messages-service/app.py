@@ -1,8 +1,6 @@
 import hazelcast
 from flask import Flask, request
 
-app = Flask(__name__)
-
 hz = hazelcast.HazelcastClient(cluster_name="dev",
                                cluster_members=[
                                    "127.0.0.1:5701",
@@ -10,30 +8,20 @@ hz = hazelcast.HazelcastClient(cluster_name="dev",
                                    "127.0.0.1:5703"
                                ])
 print("Connected to Hazelcast instance")
+queue = hz.get_queue("my-queue").blocking()
 
-messages = hz.get_map("my-map").blocking()
+app = Flask(__name__)
+data = []
 
 
 @app.get("/")
 def do_GET():
-    return str(list(messages.values()))
-
-
-@app.post("/")
-def do_POST():
-    key = str(request.form["uuid"])
-    msg = request.form["msg"]
-    print(msg)
-
-    messages.lock(key)
-    try:
-        messages.put(key, msg)
-    finally:
-        messages.unlock(key)
-
-    return ""
+    while not queue.is_empty():
+        data.append(queue.take())
+        print(f"Consumed {data[-1]}")
+    return str(data)
 
 
 if __name__ == '__main__':
-    print('logging server is running...')
+    print('message server is running...')
     app.run()
