@@ -2,7 +2,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 host_name = "localhost"
-host_port = 9002
+host_port = 9001
 
 
 @app.get("/")
